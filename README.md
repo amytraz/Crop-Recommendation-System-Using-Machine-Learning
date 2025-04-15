@@ -46,7 +46,7 @@ source env/bin/activate   # On Windows use: env\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 4. Train the Models (Optional)
+### 4. Train the Models 
 ```bash
 python train_model.py
 ```
