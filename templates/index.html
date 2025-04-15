@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Crop Recommendation System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+      :root {
+        --primary-green: #2e7d32;
+        --secondary-green: #66bb6a;
+        --accent-green: #43a047;
+        --light-green-bg: #e8f5e9;
+        --form-bg: rgba(255, 255, 255, 0.95);
+        --gradient-start: #2e7d32;
+        --gradient-end: #81c784;
+        --text-dark: #263238;
+        --text-muted: #607d8b;
+        --shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.1);
+        --shadow-strong: 0 15px 35px rgba(46, 125, 50, 0.2);
+        --border-radius: 16px;
+      }
+      
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+      
+      html, body {
+        height: 100vh;
+        overflow: hidden;
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background: url('https://cdnjs.cloudflare.com/ajax/libs/placeholder-images/0.2.0/img/1.jpg') no-repeat center center fixed;
+        background-size: cover;
+      }
+      
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(46, 125, 50, 0.85), rgba(129, 199, 132, 0.85));
+        z-index: -1;
+      }
+      
+      .main-wrapper {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+      }
+      
+      header {
+        background: rgba(255, 255, 255, 0.9);
+        color: var(--primary-green);
+        padding: 10px 0;
+        text-align: center;
+        font-weight: 700;
+        letter-spacing: 1px;
+        box-shadow: var(--shadow-soft);
+        border-bottom: 3px solid var(--accent-green);
+        z-index: 10;
+      }
+      
+      .header-logo {
+        margin-right: 10px;
+        font-size: 1.5rem;
+        vertical-align: middle;
+        color: var(--accent-green);
+      }
+      
+      .content {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+      }
+      
+      .form-container {
+        background: var(--form-bg);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-strong);
+        width: 95%;
+        max-width: 1000px;
+        height: calc(100vh - 110px);
+        display: flex;
+        flex-direction: column;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+      
+      .app-body {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+      }
+      
+      .app-sidebar {
+        width: 34%;
+        padding: 20px;
+        background: rgba(232, 245, 233, 0.7);
+        border-radius: 0 0 0 var(--border-radius);
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .app-main {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+      }
+      
+      .section-title {
+        color: var(--primary-green);
+        font-weight: 600;
+        margin-bottom: 15px;
+        font-size: 1.3rem;
+        text-align: center;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--secondary-green);
+        letter-spacing: 0.5px;
+      }
+      
+      .app-description {
+        text-align: center;
+        margin-bottom: 20px;
+        color: var(--text-dark);
+        line-height: 1.5;
+        font-size: 0.9rem;
+      }
+      
+      .sidebar-image {
+        text-align: center;
+        margin-bottom: 20px;
+        margin-top: auto;
+      }
+      
+      .sidebar-image i {
+        font-size: 6rem;
+        color: var(--accent-green);
+        opacity: 0.7;
+      }
+      
+      .form-section {
+        background: #fff;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid var(--accent-green);
+      }
+      
+      .section-header {
+        color: var(--primary-green);
+        font-weight: 600;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+      }
+      
+      .section-icon {
+        background: var(--light-green-bg);
+        color: var(--primary-green);
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+      }
+      
+      .form-label {
+        font-weight: 500;
+        color: var(--text-dark);
+        margin-bottom: 5px;
+        font-size: 0.85rem;
+      }
+      
+      .form-control {
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+        padding: 8px 12px;
+        font-size: 0.9rem;
+        transition: all 0.3s;
+      }
+      
+      .form-control:focus {
+        border-color: var(--secondary-green);
+        box-shadow: 0 0 0 0.2rem rgba(102, 187, 106, 0.25);
+      }
+      
+      .input-group-text {
+        background: var(--light-green-bg);
+        border: 1px solid #e0e0e0;
+        color: var(--text-dark);
+        border-radius: 8px 0 0 8px;
+        font-weight: 500;
+      }
+      
+      .btn-area {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 10px;
+      }
+      
+      .btn-submit {
+        background: linear-gradient(45deg, var(--primary-green), var(--secondary-green));
+        border: none;
+        color: white;
+        padding: 8px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: all 0.3s;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      
+      .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      }
+      
+      .btn-outline-reset {
+        border: 1px solid var(--text-muted);
+        color: var(--text-muted);
+        background: transparent;
+        padding: 8px 15px;
+        border-radius: 8px;
+        transition: all 0.3s;
+      }
+      
+      .btn-outline-reset:hover {
+        background: rgba(96, 125, 139, 0.1);
+        color: var(--text-dark);
+      }
+      
+      .result-container {
+        background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid rgba(129, 199, 132, 0.5);
+        animation: fadeIn 0.5s ease-in-out;
+      }
+      
+      .result-icon {
+        font-size: 2.5rem;
+        color: var(--primary-green);
+        margin-bottom: 10px;
+      }
+      
+      .result-title {
+        color: var(--text-dark);
+        font-weight: 600;
+        margin-bottom: 15px;
+      }
+      
+      .result-crop {
+        font-size: 1.7rem;
+        font-weight: 700;
+        color: var(--primary-green);
+        margin-bottom: 10px;
+        letter-spacing: 0.5px;
+      }
+      
+      .tooltip-info {
+        color: var(--text-muted);
+        cursor: pointer;
+        font-size: 0.8rem;
+        margin-left: 4px;
+      }
+      
+      footer {
+        background: rgba(255, 255, 255, 0.9);
+        color: var(--text-dark);
+        padding: 8px 0;
+        font-size: 0.8rem;
+        text-align: center;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+      }
+      
+      .footer-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+      }
+      
+      .footer-link {
+        color: var(--accent-green);
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+      
+      .footer-link:hover {
+        color: var(--primary-green);
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      @media (max-width: 992px) {
+        .app-body {
+          flex-direction: column;
+        }
+        
+        .app-sidebar {
+          width: 100%;
+          border-radius: 0;
+          padding: 15px;
+        }
+        
+        .sidebar-image {
+          display: none;
+        }
+        
+        .form-container {
+          height: calc(100vh - 110px);
+          overflow-y: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <header>
+        <i class="bi bi-flower1 header-logo"></i> CROP RECOMMENDATION SYSTEM
+      </header>
+
+      <div class="content">
+        <div class="form-container">
+          <div class="app-body">
+            <!-- Sidebar with description -->
+            <div class="app-sidebar">
+              <h2 class="section-title">Smart Agriculture</h2>
+              <p class="app-description">
+                Our advanced system uses machine learning to analyze soil nutrients and environmental factors, providing optimal crop recommendations for maximum yield and sustainability.
+              </p>
+              
+              <div class="sidebar-image">
+                <i class="bi bi-flower3"></i>
+              </div>
+              
+              {% if result %}
+              <div class="result-container">
+                <div class="result-icon">
+                  <i class="bi bi-award"></i>
+                </div>
+                <h4 class="result-title">Recommendation</h4>
+                <div class="result-crop">
+                  {{ result | title }}
+                </div>
+                <p class="text-muted">Based on your input parameters</p>
+              </div>
+              {% endif %}
+            </div>
+            
+            <!-- Main form area -->
+            <div class="app-main">
+              <form action="/predict" method="POST" id="cropForm">
+                <!-- Soil Nutrients Section -->
+                <div class="form-section">
+                  <div class="section-header">
+                    <div class="section-icon">
+                      <i class="bi bi-layers"></i>
+                    </div>
+                    <span>Soil Nutrients Profile</span>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-md-4 mb-3">
+                      <label class="form-label">Nitrogen <i class="bi bi-info-circle tooltip-info" title="Nitrogen content in soil (kg/ha)"></i></label>
+                      <div class="input-group">
+                        <span class="input-group-text">N</span>
+                        <input type="number" name="Nitrogen" class="form-control" value="{{ Nitrogen }}" placeholder="Enter value" required>
+                      </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                      <label class="form-label">Phosphorus <i class="bi bi-info-circle tooltip-info" title="Phosphorus content in soil (kg/ha)"></i></label>
+                      <div class="input-group">
+                        <span class="input-group-text">P</span>
+                        <input type="number" name="Phosporus" class="form-control" value="{{ Phosporus }}" placeholder="Enter value" required>
+                      </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                      <label class="form-label">Potassium <i class="bi bi-info-circle tooltip-info" title="Potassium content in soil (kg/ha)"></i></label>
+                      <div class="input-group">
+                        <span class="input-group-text">K</span>
+                        <input type="number" name="Potassium" class="form-control" value="{{ Potassium }}" placeholder="Enter value" required>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4 mb-3">
+                      <label class="form-label">pH Level <i class="bi bi-info-circle tooltip-info" title="Soil pH value (0-14 scale)"></i></label>
+                      <div class="input-group">
+                        <span class="input-group-text">pH</span>
+                        <input type="number" step="0.01" name="Ph" class="form-control" value="{{ Ph }}" placeholder="Enter value" required min="0" max="14">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Environmental Factors Section -->
+                <div class="form-section">
+                  <div class="section-header">
+                    <div class="section-icon">
+                      <i class="bi bi-cloud-sun"></i>
+                    </div>
+                    <span>Environmental Factors</span>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-md-4 mb-3">
+                      <label class="form-label">Temperature <i class="bi bi-info-circle tooltip-info" title="Average temperature in Celsius"></i></label>
+                      <div class="input-group">
+                        <input type="number" step="0.01" name="Temperature" class="form-control" value="{{ Temperature }}" placeholder="Enter value" required>
+                        <span class="input-group-text">°C</span>
+                      </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                      <label class="form-label">Humidity <i class="bi bi-info-circle tooltip-info" title="Relative humidity percentage"></i></label>
+                      <div class="input-group">
+                        <input type="number" step="0.01" name="Humidity" class="form-control" value="{{ Humidity }}" placeholder="Enter value" required min="0" max="100">
+                        <span class="input-group-text">%</span>
+                      </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                      <label class="form-label">Rainfall <i class="bi bi-info-circle tooltip-info" title="Average rainfall in millimeters"></i></label>
+                      <div class="input-group">
+                        <input type="number" step="0.01" name="Rainfall" class="form-control" value="{{ Rainfall }}" placeholder="Enter value" required>
+                        <span class="input-group-text">mm</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="btn-area">
+                  <button type="submit" class="btn btn-submit">
+                    <i class="bi bi-search me-2"></i>Get Recommendation
+                  </button>
+                  <button type="reset" class="btn btn-outline-reset" id="resetBtn">
+                    <i class="bi bi-arrow-counterclockwise me-1"></i>Reset
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="footer-content">
+          <div>
+            <i class="bi bi-plant"></i> ML Mini Project: 122B1B181-122B1B183-122B1B89 © 2025
+          </div>
+          <div>
+            <a href="#" class="footer-link"><i class="bi bi-info-circle"></i> About</a>
+          </div>
+          <div>
+            <a href="#" class="footer-link"><i class="bi bi-question-circle"></i> Help</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+        
+        // Form validation
+        const form = document.getElementById('cropForm');
+        if(form) {
+          form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        }
+        
+        // Reset button handler
+        const resetBtn = document.getElementById('resetBtn');
+        if (resetBtn) {
+          resetBtn.addEventListener('click', function() {
+            // If you need to hide result section when form is reset
+            const resultContainer = document.querySelector('.result-container');
+            if (resultContainer) {
+              resultContainer.style.display = 'none';
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
