@@ -73,7 +73,7 @@ http://127.0.0.1:5000/
 
 ![image](https://github.com/user-attachments/assets/585d003f-70bf-4b02-8463-a352e65759a4)
 
-###  Input Data
+###  Sample Input Data
 
 ![image](https://github.com/user-attachments/assets/5c202ab9-7d55-42bd-9db7-91ddba4171bd)
 
