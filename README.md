@@ -27,6 +27,39 @@ Using these parameters, the application predicts the most suitable crop using a 
 - Simple and interactive UI built using Flask, HTML, and CSS
 - Model-wise prediction visibility for transparency
 
+## 🚀 How to Run the Project
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/yourusername/crop-recommendation-ml.git
+cd Crop-Recommendation-System-Using-Machine-Learning
+```
+
+### 2. Create and Activate Virtual Environment (Optional)
+```bash
+python -m venv env
+source env/bin/activate   # On Windows use: env\Scripts\activate
+```
+
+### 3. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Train the Models (Optional)
+```bash
+python train_model.py
+```
+
+### 5. Start the Flask App
+```bash
+python app.py
+```
+
+### 6. Open in Browser
+```
+http://127.0.0.1:5000/
+```
 
 ## 🧪 Sample Input
 | N  | P  | K  | Temp (°C) | Humidity (%) | pH  | Rainfall (mm) |
@@ -45,6 +78,7 @@ Using these parameters, the application predicts the most suitable crop using a 
 | XGBoost        | 98.64%   |
 
 **Ensemble Voting** improves stability and handles inconsistent model outputs more reliably.
+
 
 ## 📁 Dataset Source
 [Kaggle: Crop Recommendation Dataset](https://www.kaggle.com/datasets/atharvaingle/crop-recommendation-dataset)
