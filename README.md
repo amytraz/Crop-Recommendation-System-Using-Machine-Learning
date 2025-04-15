@@ -68,6 +68,21 @@ http://127.0.0.1:5000/
 
 **Output:** `Recommended Crop: Rice`
 
+
+###  User Interface
+
+![image](https://github.com/user-attachments/assets/585d003f-70bf-4b02-8463-a352e65759a4)
+
+###  Input Data
+
+![image](https://github.com/user-attachments/assets/5c202ab9-7d55-42bd-9db7-91ddba4171bd)
+
+###  Crop Recommendation
+
+![image](https://github.com/user-attachments/assets/15170272-c38f-44ec-a9fe-4fdf806c7ae5)
+
+
+
 ## 📊 Models Performance
 
 | Model          | Accuracy |
